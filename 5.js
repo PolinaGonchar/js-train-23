@@ -1,44 +1,43 @@
-// Адаптер (Adapter) — це патерн програмування, який дозволяє об'єктам з інтерфейсом несумісним з іншими об'єктами працювати разом,
-// перетворюючи інтерфейс одного об'єкта на інтерфейс, очікуваний іншим об'єктом.
+// Adapter is a design pattern that allows objects with incompatible interfaces to work together
+// by converting the interface of one object into an interface expected by another object.
 
-// Клас BankTransfer представляє собою систему для здійснення банківських переказів
+// The BankTransfer class represents a system for making bank transfers.
 class BankTransfer {
-  // Зробіть метод initiateTransfer, який приймає amount та відповідає за ініціювання банківського переказу
-  // Він приймає суму переказу як параметр
-  // Для ініціювання банківського переказу спершу обчислюється сума з урахуванням комісії calculatedAmount = this.calculateFee(amount)
-  // Виводимо інформацію про ініціювання банківського переказу Ініціюємо банківський переказ: $${calculatedAmount}
-  // Зробіть метод calculateFee, який відповідає за розрахунок комісії за переказ
-  // Він приймає amount переказу як параметр та повертає число після розрахування комісії
-  // Логіка розрахунку комісії за переказ amount * 1.02
-  // Припустимо, комісія становить 2% від суми переказу
+  initiateTransfer(amount) {
+    let calculatedAmount = this.calculateFee(amount);
+    console.log(`Initiating bank transfer: $${calculatedAmount}`);
+  }
+  calculateFee(amount) {
+    return amount * 1.02;
+  }
 }
 
-// Клас WalletTransfer представляє собою систему для здійснення переказів з гаманця
+// The WalletTransfer class represents a system for making wallet transfers.
 class WalletTransfer {
-  // Створіть метод processTransfer, який відповідає за здійснення переказу з гаманця
-  // Він приймає суму переказу як параметр
-  // Виводимо інформацію про здійснення переказу з гаманця Здійснюємо переказ з гаманця: $${amount}
+  processTransfer(amount) {
+    console.log(`Processing wallet transfer: $${amount}`);
+  }
 }
 
-// Клас TransferAdapter виступає адаптером, який дозволяє нам користуватися
-// методами WalletTransfer так, ніби це BankTransfer.
+// The TransferAdapter class acts as an adapter, allowing us to use the methods of WalletTransfer
+// as if it were BankTransfer.
 class TransferAdapter {
-  // Робимо конструктор, що приймає об'єкт transferSystem типу WalletTransfer
-  // Зберігаємо посилання на об'єкт WalletTransfer у властивості transferSystem
-  // Робимо метод initiateTransfer, який адаптує API WalletTransfer до API BankTransfer.
-  // Він приймає amount як аргумент та повертає результат виконання переказу.
-  // Викликаємо допоміжний метод calculateFee для обчислення комісії за переказ та результат записуєм в константу calculatedAmount
-  // Викликаємо метод processTransfer об'єкту WalletTransfer з calculatedAmount.
-  // В результаті повертаємо результат виконання переказу.
-  // Створюємо метод calculateFee, що приймає amount та обчислює суму комісії за переказ amount * 1.2, засновуючись на вхідній сумі.
-  // Повертаємо amount * 1.2
+  constructor(transferSystem) {
+    this.transferSystem = transferSystem;
+  }
+  initiateTransfer(amount) {
+    const calculatedAmount = this.calculateFee(amount);
+    this.transferSystem.processTransfer(calculatedAmount);
+  }
+  calculateFee(amount) {
+    return amount * 1.2;
+  }
 }
-console.log("Завдання 5 ====================================");
-// Після виконання розкоментуйте код нижче
+console.log("Task 5 ====================================");
 
-// Створимо екземпляри BankTransfer
-// const purchase1 = new BankTransfer();
-// purchase1.initiateTransfer(1000);
+// Creating instances of BankTransfer
+const purchase1 = new BankTransfer();
+purchase1.initiateTransfer(1000);
 
-// const purchase2 = new BankTransfer();
-// purchase2.initiateTransfer(10);
+const purchase2 = new BankTransfer();
+purchase2.initiateTransfer(10);

@@ -1,34 +1,58 @@
-// Шаблонний метод (Template Method) — це патерн програмування, який визначає загальну структуру алгоритму, залишаючи певні кроки реалізації підкласам.
-// Клас-шаблон визначає основну логіку алгоритму, а підкласи можуть змінювати або розширювати окремі кроки.
+// The Template Method is a programming pattern that defines the overall structure of an algorithm,
+// leaving certain implementation steps to subclasses.
+// The template class defines the main logic of the algorithm, while subclasses can modify or extend individual steps.
 
-// Клас TeaMaker відповідає за загальні дії, необхідні для приготування чаю.
+// The TeaMaker class is responsible for the general actions required to make tea.
 class TeaMaker {
-  // Робимо метод makeTea, який викликає всі кроки приготування чаю по черзі boilWater, addTeaLeaves, #steepTea,
-  // pourIntoCup, addCondiments, serveTea.
-  // Робимо метод boilWater, який відповідає за кип'ятіння води та виводить в консоль Кип'ятимо воду....
-  // Робимо метод addTeaLeaves, який відповідає за додавання чайних листків та виводить в консоль Додаємо чайні листки....
-  // Робимо метод steepTea, що відповідає за заварювання чаю та виводить в консоль Заварюємо чай....
-  // Робимо метод pourIntoCup, що відповідає за переливання чаю в чашку та виводить в консоль Переливаємо чай в чашку....
-  // Робимо метод addCondiments, що залишається пустим і може бути перевизначений у підкласах.
-  // Робимо метод serveTea, що відповідає за подачу чаю та виводить в консоль Чай подається!.
+  makeTea() {
+    this.boilWater();
+    this.addTeaLeaves();
+    this.#steepTea();
+    this.pourIntoCup();
+    this.addCondiments();
+    this.serveTea();
+  }
+  boilWater() {
+    console.log(`Boiling water...`);
+  }
+  addTeaLeaves() {
+    console.log(`Adding tea leaves...`);
+  }
+  #steepTea() {
+    console.log("Steeping the tea...");
+  }
+
+  pourIntoCup() {
+    console.log("Pouring tea into the cup...");
+  }
+
+  // The addCondiments method is left empty - it can be overridden in subclasses.
+  addCondiments() {}
+  
+  serveTea() {
+    console.log(`Tea is served!`);
+  }
 }
 
-// Клас GreenTeaMaker є підкласом класу TeaMaker та додає інгредієнти для зеленого чаю.
+// The GreenTeaMaker class is a subclass of the TeaMaker class and adds ingredients for green tea.
 class GreenTeaMaker extends TeaMaker {
-  // Робимо метод addCondiments, який виводить в консоль Додаємо мед, щоб приготувати зелений чай...
+  addCondiments() {
+    console.log(`Adding honey to make green tea.`);
+  }
 }
 
-// Клас BlackTeaMaker є підкласом класу TeaMaker та додає інгредієнти для чорного чаю.
+// The BlackTeaMaker class is a subclass of the TeaMaker class and adds ingredients for black tea.
 class BlackTeaMaker extends TeaMaker {
-  // Робимо метод addCondiments, який виводить в консоль Додаємо мед, щоб приготувати чорний чай...
+  addCondiments() {
+    console.log(`Adding honey to make black tea.`);
+  }
 }
 
-console.log("Завдання 3 ====================================");
-// Після виконання розкоментуйте код нижче
+console.log("Task 3 ====================================");
 
-// Створюємо екземпляри класів GreenTeaMaker та BlackTeaMaker.
-// const greenTeaMaker = new GreenTeaMaker();
-// greenTeaMaker.makeTea();
+// Creating instances of the GreenTeaMaker and BlackTeaMaker classes.
+const greenTeaMaker = new GreenTeaMaker();
+greenTeaMaker.makeTea();
 
-// const blackTeaMaker = new BlackTeaMaker();
-// blackTeaMaker.makeTea();
+const blackTeaMaker = new BlackTeaMaker();
+blackTeaMaker.makeTea();

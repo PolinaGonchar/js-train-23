@@ -1,41 +1,55 @@
-// Ітератор (Iterator) — це патерн програмування, який надає спосіб послідовного доступу до елементів колекції без розкриття його внутрішньої структури.
+// Iterator is a design pattern that provides a way to sequentially access elements of a collection without exposing its internal structure.
 
-// Клас Employee відповідає за створення об'єктів працівників. Кожен працівник має своє ім'я, посаду та зарплату.
+// The Employee class is responsible for creating employee objects. Each employee has a name, position, and salary.
 class Employee {
-  // Створимо конструктор, що використовується для ініціалізації об'єктів класу. Він приймає три параметри: name, position та salary.
-  // Передаємо аргумент в this.name, this.position та this.salary - це властивості класу. Вони ініціалізуються значеннями, переданими в конструктор.
+  constructor(name, position, salary) {
+    this.name = name;
+    this.position = position;
+    this.salary = salary;
+  }
 }
 
-// Клас EmployeeGroup використовується для створення груп працівників. Він містить список працівників.
+// The EmployeeGroup class is used to create groups of employees. It contains a list of employees.
 class EmployeeGroup {
-  // Задаємо властивість employees, яке призначене для зберігання працівників. Він ініціалізується як порожній масив.
-  // Робимо метод addEmployee, який додає працівника до групи. Він приймає один параметр employee - об'єкт типу Employee.
-  // Цей метод додає об'єкт працівника до масиву employees, використовуючи метод push.
+  employees = [];
+  addEmployee(employee) {
+    this.employees.push(employee);
+  }
 }
 
-// Клас EmployeeIterator відповідає за ітерацію по групі працівників.
+// The EmployeeIterator class is responsible for iterating through the employee group.
 class EmployeeIterator {
-  // Робимо властивість #employees - це масив працівників, по якому ми будемо ітерувати. Він ініціалізується у конструкторі.
-  // Робимо властивість #currentIndex, яка вказує на поточну позицію в масиві працівників. Він ініціалізується зі значенням 0.
-  // Конструктор приймає один параметр employeeGroup - об'єкт типу EmployeeGroup. Він ініціалізує властивість #employees this.#employees = employeeGroup.employees.
-  // Створимо метод #hasNext, який перевіряє, чи є в масиві працівників наступний елемент для ітерації.
-  // Він повертає true, якщо поточний індекс менший за довжину масиву, і false в протилежному випадку.
-  // Робимо метод next, який повертає наступного працівника в масиві та збільшує #currentIndex на 1 якщо є наступний елемент, інакше повертає null.
-  // Робимо метод list, який використовується для виведення імен всіх працівників в групі.
+  #employees = [];
+  #currentIndex = 0;
+  constructor(employeeGroup) {
+    this.#employees = employeeGroup.employees;
+  }
+  #hasNext() {
+    return this.#currentIndex < this.#employees.length;
+  }
+  #next() {
+    if (this.#hasNext()) {
+      const employee = this.#employees[this.#currentIndex];
+      this.#currentIndex++;
+      return employee;
+    }
+  }
+  list() {
+    return this.#employees.map((employee) => employee.name);
+  }
 }
 
-console.log("Завдання 7 ====================================");
-// Після виконання розкоментуйте код нижче
+console.log("Task 7 ====================================");
 
-// Створюємо нову групу працівників.
-// const employeeGroup = new EmployeeGroup();
+// Creating a new employee group.
+const employeeGroup = new EmployeeGroup();
 
-// Додаємо нових працівників до групи, використовуючи метод addEmployee.
-// employeeGroup.addEmployee(new Employee("John Doe", "Manager", 5000));
-// employeeGroup.addEmployee(new Employee("Jane Smith", "Developer", 4000));
+// Adding new employees to the group using the addEmployee method.
+employeeGroup.addEmployee(new Employee("John Doe", "Manager", 5000));
+employeeGroup.addEmployee(new Employee("Jane Smith", "Developer", 4000));
 
-// Створюємо новий ітератор для групи працівників.
-// const employeeIterator = new EmployeeIterator(employeeGroup);
+// Creating a new iterator for the employee group.
+const employeeIterator = new EmployeeIterator(employeeGroup);
 
-// Виводимо імена всіх працівників в групі, використовуючи метод list.
-// console.log(employeeIterator.list());
+// Outputting the names of all employees in the group using the list method.
+console.log(employeeIterator.list());

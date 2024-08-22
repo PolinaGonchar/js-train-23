@@ -1,58 +1,77 @@
-// Відвідувач (Visitor) — це патерн програмування, який дозволяє додавати нові операції до групи об'єктів, не змінюючи самі об'єкти.
-// Відвідувач розділяє алгоритм від представлення об'єктів, що дозволяє додавати нові операції, не змінюючи класи цих об'єктів.
+// The Visitor is a programming pattern that allows adding new operations to a group of objects
+// without changing the objects themselves.
+// The Visitor separates the algorithm from the representation of objects, which allows adding new operations
+// without modifying the classes of these objects.
 
-// Клас Letter представляє об'єкт листа з назвою і текстом.
+// The Letter class represents a letter object with a title and text.
 class Letter {
-  // Створіть конструктор, що приймає назву листа title та його текстовий вміст text та ініціалізує відповідні поля
-  // Записуємо аргумент title в властивість title, яка представляє назву листа в класі
-  // Записуємо аргумент text в властивість text, яка представляє  текстовий вміст листа в класі
+  constructor(title, text) {
+    this.title = title;
+    this.text = text;
+  }
 }
 
-// Клас Picture представляє об'єкт зображення з назвою та розміром
+// The Picture class represents an image object with a title and size.
 class Picture {
-  // Створіть конструктор, що приймає назву зображення title та його розмір size та ініціалізує відповідні поля
-  // Записуємо аргумент title в властивість title, яка представляє назву зображення в класі
-  //  Записуємо аргумент size в властивість size, яка представляє розмір зображення
+  constructor(title, size) {
+    this.title = title;
+    this.size = size;
+  }
 }
 
-// Клас Movie представляє об'єкт відеофільму з назвою та тривалістю
+// The Movie class represents a movie object with a title and duration.
 class Movie {
-  // Конструктор приймає назву відеофільму title та його тривалість duration та ініціалізує відповідні поля
-  // Записуємо аргумент title в властивість title, яка представляє назву відеофільму в класі
-  // Записуємо аргумент duration в властивість duration, яка представляє тривалість відеофільму
+  constructor(title, duration) {
+    this.title = title;
+    this.duration = duration;
+  }
 }
 
-// Клас Portfolio представляє колекцію об'єктів, таких як листи, зображення та відеофільми
+// The Portfolio class represents a collection of objects such as letters, images, and movies.
 class Portfolio {
-  // Створимо властивість elements, яка представляє список об'єктів в портфоліо, початкове значення пустий масив
-  // Зрібть метод addElement, що приймає element та додає об'єкт до портфоліо
-  // Зробіть методи readLetter, що приймає letter та виводить в консоль: "Лист: ${letter.title}, Розмір: ${letter.text.length} символів"
-  // Зробіть методи readPicture, що приймає letter та виводить в консоль: "Картина: ${picture.title}, Розмір: ${picture.size} KB"
-  // Зробіть методи readMovie, що приймає letter та виводить в консоль: "Фільм: ${movie.title}, Тривалість: ${movie.duration} хвилин"
-  // Зробіть метод readElements, який читає інформацію про всі об'єкти в портфоліо в залежності від того якого класу елемент викликає readLetter, readPicture, readMovie
-  // Робимо ітерацію for де є змінна element в яку приходять елементи this.elements
-  // Через instanceof по черзі через if та instanceof перевіряємо відношення element до кожного класу.
-  // Якщо element є елементом певного класу, то викликати відповідний метод для читання об'єкту певного класу
+  elements = [];
+  addElement(element) {
+    this.elements.push(element);
+  }
+  readLetter(letter) {
+    console.log(`Letter: ${letter.title}, Length: ${letter.text.length} characters`);
+  }
+  readPicture(picture) {
+    console.log(`Picture: ${picture.title}, Size: ${picture.size} KB`);
+  }
+  readMovie(movie) {
+    console.log(`Movie: ${movie.title}, Duration: ${movie.duration} minutes`);
+  }
+  readElements() {
+    for (const element of this.elements) {
+      if (element instanceof Letter) {
+        this.readLetter(element);
+      } else if (element instanceof Picture) {
+        this.readPicture(element);
+      } else if (element instanceof Movie) {
+        this.readMovie(element);
+      }
+    }
+  }
 }
 
-console.log("Завдання 4 ====================================");
-// Після виконання розкоментуйте код нижче
+console.log("Task 4 ====================================");
 
-// Створюємо екземпляр класу Portfolio
-// const myPortfolio = new Portfolio();
+// Creating an instance of the Portfolio class.
+const myPortfolio = new Portfolio();
 
-// Створюємо різні об'єкти
-// const letter = new Letter("My Letter", "Hello, this is a letter.");
-// const picture = new Picture("My Picture", 2048);
-// const movie = new Movie("My Movie", 120);
+// Creating different objects.
+const letter = new Letter("My Letter", "Hello, this is a letter.");
+const picture = new Picture("My Picture", 2048);
+const movie = new Movie("My Movie", 120);
 
-// Додаємо об'єкти до портфоліо
-// myPortfolio.addElement(letter);
-// myPortfolio.addElement(picture);
-// myPortfolio.addElement(movie);
+// Adding objects to the portfolio.
+myPortfolio.addElement(letter);
+myPortfolio.addElement(picture);
+myPortfolio.addElement(movie);
 
-// Виводимо всі об'єкти в портфоліо
-// console.log(myPortfolio.elements);
+// Outputting all objects in the portfolio.
+console.log(myPortfolio.elements);
 
-// Читаємо інформацію про всі об'єкти в портфоліо
-// myPortfolio.readElements();
+// Reading information about all objects in the portfolio.
+myPortfolio.readElements();

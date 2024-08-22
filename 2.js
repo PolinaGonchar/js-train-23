@@ -1,53 +1,66 @@
-// Муха (Flyweight) — це патерн програмування, основна ідея якого полягає в тому, щоб спільно використовувати об'єкт-одиночка
-// замість створення окремих унікальних об'єктів для кожного випадку використання
+// Flyweight is a programming pattern whose main idea is to reuse a singleton object
+// instead of creating separate unique objects for each use case.
 
-// Клас Group. Він використовує шаблон "Одиночка" та відповідає за створення груп товарів.
-// Створюємо приватне статичне поле #groups використовується для зберігання усіх створених груп. Має початкове значени: пустий об'єкт
-//Об'єкт використовується для зберігання груп, де ключ - це назва групи, а значення - екземпляр групи.
+class Group {
+    static #groups = {};
+    constructor(name) {
+        this.name = name;
+    }
+    static create(name) {
+        if (!this.#groups[name]) {
+            this.#groups[name] = new Group(name);
+        }
+        return this.#groups[name];
+    }
+}
 
-// Створюмєо конструктор класу, який приймає назву групи як аргумент та ініціалізує поле this.name.
+class Product extends Group {
+    constructor(name, group) {
+        super(name);
+        this.group = group;
+    }
+    display() {
+        console.log(`Product: ${this.name}, Group: ${this.group.name}`);
+    }
+}
 
-// Створюємо статичний метод create, який приймає назву групи name як аргумент.
-// Метод завжди повертає екземпляр групи з вказаною назвою.
-// Перевірка чи група з такою назвою ще не була створена
-// то вона створюється та зберігається в полі #groups.
-// в кінці повертає #groups[name]
+// The Group class. It uses the "Singleton" pattern and is responsible for creating product groups.
 
-// Клас Product відповідає за створення продуктів.
-// Створюємо конструктор класу, який приймає назву продукту name та групу group як аргументи та ініціалізує відповідні поля.
+// The Product class is responsible for creating products.
+// We create a constructor for the class, which accepts the product name and the group as arguments, and initializes the corresponding fields.
 
-// Робимо метод display, який виводить інформацію про продукт в консоль Продукт: ${this.name}, Група: ${this.group.name}.
+// We create the display method, which outputs information about the product to the console: Product: ${this.name}, Group: ${this.group.name}.
 
-console.log("Завдання 2 ====================================");
-// Після виконання розкоментуйте код нижче
+console.log("Task 2 ====================================");
+// After executing, uncomment the code below
 
-// Створення груп за допомогою методу Group.create. Цей метод гарантує, що кожна група з унікальною назвою буде створена лише один раз.
-// const electronics = Group.create("Електроніка");
-// const books = Group.create("Книги");
-// const electronics2 = Group.create("Електроніка");
+// Creating groups using the Group.create method. This method ensures that each group with a unique name is created only once.
+const electronics = Group.create("Electronics");
+const books = Group.create("Books");
+const electronics2 = Group.create("Electronics");
 
-// Виведення груп в консоль. Ми бачимо, що electronics та electronics2 - це один і той же об'єкт.
-// console.log(electronics, books, electronics2);
-// console.log(electronics === electronics2); // true
+// Outputting the groups to the console. We can see that electronics and electronics2 are the same object.
+console.log(electronics, books, electronics2);
+console.log(electronics === electronics2); // true
 
-// Створення продуктів. Кожен продукт належить до певної групи.
-// const product1 = new Product("Ноутбук", electronics);
-// const product2 = new Product("Навушники", electronics);
-// const product3 = new Product("Воно", books);
-// const product4 = new Product("Смартфон", Group.create("Електроніка")); // тут створюється нова група або використовується вже створена
+// Creating products. Each product belongs to a specific group.
+const product1 = new Product("Laptop", electronics);
+const product2 = new Product("Headphones", electronics);
+const product3 = new Product("It", books);
+const product4 = new Product("Smartphone", Group.create("Electronics")); // here a new group is created or an existing one is used
 
-// Виведення продуктів в консоль.
-// product1.display();
-// product2.display();
-// product3.display();
-// product4.display();
+// Outputting products to the console.
+product1.display();
+product2.display();
+product3.display();
+product4.display();
 
-// Перевірка, чи належать два продукти до однієї групи.
-// console.log(product1.group === product4.group); // true
+// Checking if two products belong to the same group.
+console.log(product1.group === product4.group); // true
 
-// Фільтрація продуктів за групою. В даному випадку виводяться тільки продукти групи "Електроніка".
-// const list = [product1, product2, product3, product4].filter(
-//   (product) => product.group === Group.create("Електроніка")
-// );
+// Filtering products by group. In this case, only products from the "Electronics" group are displayed.
+const list = [product1, product2, product3, product4].filter(
+  (product) => product.group === Group.create("Electronics")
+);
 
-// console.log(list); // виводиться список продуктів, що належать до групи "Електроніка"
+console.log(list); // outputs a list of products that belong to the "Electronics" group

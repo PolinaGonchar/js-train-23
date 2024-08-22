@@ -1,33 +1,43 @@
-// Медіатор (Mediator) — це патерн програмування, який визначає об'єкт, який інкапсулює взаємодію між групою об'єктів. Медіатор сприяє слабкій залежності між цими об'єктами,
-// дозволяючи спілкуватися з ними через централізовану точку.
+// Mediator is a design pattern that defines an object that encapsulates the interaction between a group of objects. 
+// The mediator promotes loose coupling between these objects, allowing them to communicate through a centralized point.
 
-// Клас User відповідає за користувача, який може відправляти повідомлення.
+// The User class represents a user who can send messages.
 class User {
-  // Створюємо конструктор класу, який приймає name та messenger як параметри та ініціалізує їх
-  // Робимо метод sendMessage який відправляє повідомлення за допомогою відповідного месенджера, та виводить в консоль `${this.name} відправив повідомлення ${message}`.
-  // Він приймає один параметр - message - повідомлення, яке потрібно відправити за допомогою методу sendMessage.
-  // Метод receiveMessage приймає аргументи user,message та виводить в консоль ${this.name} отримав повідомлення від ${user.name}: ${message}
+  constructor(name, messenger) {
+    this.name = name;
+    this.messenger = messenger;
+  }
+  sendMessage(message) {
+    console.log(`${this.name} sent a message: ${message}`);
+    this.messenger.sendMessage(`[${this.name}]: ${message}`);
+  }
+  receiveMessage(user, message) {
+    console.log(`${this.name} received a message from ${user.name}: ${message}`);
+  }
 }
 
-// Клас SMSMessenger відповідає за відправку повідомлень за допомогою SMS.
+// The SMSMessenger class is responsible for sending messages via SMS.
 class SMSMessenger {
-  // Створюємо статичний метод sendMessage який приймає один параметр - message, та виводить в консоль `Відправлено SMS: ${message}`
+  static sendMessage(message) {
+    console.log(`Sent SMS: ${message}`);
+  }
 }
 
-// Клас EmailMessenger відповідає за відправку повідомлень за допомогою Email.
+// The EmailMessenger class is responsible for sending messages via Email.
 class EmailMessenger {
-  // Створюємо статичний метод sendMessage який приймає один параметр - message, та виводить в консоль `Відправлено Email: ${message}`
+  static sendMessage(message) {
+    console.log(`Sent Email: ${message}`);
+  }
 }
 
-console.log("Завдання 7 ====================================");
-// Після виконання розкоментуйте код нижче
+console.log("Task 8 ====================================");
 
-// Створюємо двох користувачів - John та Jane - які відправляють повідомлення за допомогою різних месенджерів.
-// const john = new User("John", SMSMessenger);
-// const jane = new User("Jane", EmailMessenger);
+// Creating two users - John and Jane - who send messages using different messengers.
+const john = new User("John", SMSMessenger);
+const jane = new User("Jane", EmailMessenger);
 
-// John відправляє повідомлення за допомогою SMS.
-// john.sendMessage("Привіт!"); // Виведе: Відправлено SMS: [John]: Привіт!
+// John sends a message via SMS.
+john.sendMessage("Hello!"); // Output: Sent SMS: [John]: Hello!
 
-// Jane відправляє повідомлення за допомогою Email.
-// jane.sendMessage("Привіт!"); // Виведе: Відправлено Email: [Jane]: Привіт!
+// Jane sends a message via Email.
+jane.sendMessage("Hello!"); // Output: Sent Email: [Jane]: Hello!
